@@ -1,29 +1,20 @@
 const postReducer = (state = [], action) => {
     switch (action.type) {
         case 'ALL_POSTS':
-            console.log('postReducer ALL_POSTS')
-            // loadPosts()
+            console.log('state action ==', state, action)
             return action.data;
+            // return state.concat(action.data);
         case 'ADD_POST':
+            console.log('action state add post ', state)
             return state.concat([action.data]);
+        case 'AUTH_SUCCESS':
+            console.log('action state AUTH_SUCCESS', action.data)
+            // return {user: action.data, loading: false, redirectToReferrer: true};
+            return {...state, redirectToReferrer: true};
         case 'ERROR':
-            return state.concat([action.data]);
-        case 'DELETE_POST':
-            return state.filter((post) => post.id !== action.id);
-        case 'EDIT_POST':
-            // return state.map((post) => post.id === action.id ? {...post, editing: !post.editing} : post)
-            return state.map((post) => post.id === action.id ? {...post, editing: true} : post)
-        case 'UPDATE':
-            return state.map((post) => {
-                if (post.id === action.id) {
-
-                    return {
-                        ...post,
-                        title: action.data.newTitle,
-                        editing: false
-                    }
-                } else return post;
-            })
+            return action.msg;
+        case 'AUTH_ERROR':
+            return {...state, error: action.error, redirectToReferrer: false};
         default:
             return state;
     }
