@@ -17,25 +17,22 @@ import {PrivateRoute} from './routes/PrivateRouter';
 import PostById from "./components/Post/PostById";
 import NavbarHeader from './components/Header/Navbar'
 import {createBrowserHistory} from "history";
-import { Container, Row } from "react-bootstrap";
+import {Container, Row} from "react-bootstrap";
+import {Switch} from "react-router";
 
 const customHistory = createBrowserHistory();
 const store = createStore(reducer, applyMiddleware(thunk));
 const Root =
     <Provider store={store}>
-        <NavbarHeader/>
         <Container>
-            <Row>
-                <BrowserRouter istory={customHistory}>
-                    <div>
-                        <PrivateRoute exact path="/" component={App}/>
-                        <Route path="/login" component={LoginPage}/>
-                        {/*<Route exact path="/" component={App}/>*/}
-                        <PrivateRoute exact path="/post/:id" component={PostById}/>
-                        <PrivateRoute exact path="/post" component={PostForm}/>
-                    </div>
-                </BrowserRouter>
-            </Row>
+            <BrowserRouter istory={customHistory}>
+                <NavbarHeader/>
+                <PrivateRoute exact path="/" component={App}/>
+                <Route path="/login" component={LoginPage}/>
+                {/*<Route exact path="/" component={App}/>*/}
+                <PrivateRoute exact path="/post/:id" component={PostById}/>
+                <PrivateRoute exact path="/post" component={PostForm}/>
+            </BrowserRouter>
         </Container>
     </Provider>
 

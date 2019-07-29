@@ -7,6 +7,7 @@ const postStyle = {
 
 const Post = props => (
     <div style={postStyle}>
+        <soan>{props.post.id}</soan>
         <h2>{props.post.title}</h2>
         <h2>{props.post.body}</h2>
     </div>

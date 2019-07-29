@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {auth} from "../../actions";
 import {Redirect, withRouter} from "react-router";
 import AllPost from "../Posts/AllPost";
-import {Alert} from "react-bootstrap";
+import { Alert, Row } from "react-bootstrap";
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -12,6 +12,7 @@ class LoginPage extends React.Component {
         function logout() {
             // remove user from local storage to log user out
             localStorage.removeItem('token');
+            // return <Redirect to='/login'/>
         }
 
         logout()
@@ -59,12 +60,15 @@ class LoginPage extends React.Component {
         }
         return (
             <>
-                {user.error ?
-                    <Alert variant='danger'>
-                        {user.error}
-                    </Alert>
-                    : ''
-                }
+                <Row>
+                    {user.error ?
+                        <Alert variant='danger'>
+                            {user.error}
+                        </Alert>
+                        : ''
+                    }
+                </Row>
+
                 <h2>Login</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (user.error ? ' has-error' : '')}>

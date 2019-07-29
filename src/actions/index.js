@@ -1,4 +1,5 @@
 import axios from "axios";
+import _ from 'lodash'
 
 export const loadPosts = () => {
 
@@ -63,5 +64,20 @@ export const auth = (id) => {
             })
             .catch(err => dispatch(
                 {type: "AUTH_ERROR", error: "Please enter valid email or password."}))
+    }
+}
+
+export const sortByParameterAndMethod = (posts, param, method) => {
+    return dispatch => {
+        try {
+            const sortedPosts = _.orderBy(posts, [param],[method]);
+            console.log('sortedPosts action', sortedPosts)
+            dispatch(
+                {type: "SORT_BY_PARAMETER", posts: sortedPosts})
+        } catch (e) {
+            throw new Error(`Unknown parameter: ${param}. Description: ${e}`)
+
+        }
+
     }
 }
