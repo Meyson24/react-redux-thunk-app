@@ -12,7 +12,7 @@ class PostById extends React.Component {
         const post = this.props.location.state.post
         return (
             <>
-                <Post key={post.id} post={post}/>
+                <Post showLinkToPost={false} post={post}/>
             </>
         );
     }

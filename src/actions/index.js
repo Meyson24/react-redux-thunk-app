@@ -40,7 +40,7 @@ export const addPost = (post) => {
 export const auth = (id) => {
 
     return dispatch => {
-        return axios(`https://jsonplaceholder.typicode.com/posts/${id}`,
+        return axios(`https://jsonplaceholder.typicode.com/posts/${1}`,
             {
                 method: "GET",
                 mode: 'no-cors',

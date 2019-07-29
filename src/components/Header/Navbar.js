@@ -16,7 +16,7 @@ class NavbarHeader extends React.Component {
         const isAuthorized = localStorage.getItem('token');
         return (
             <>
-                <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+                <Navbar style={{marginBottom: "20px"}} collapseOnSelect expand="lg" bg="dark" variant="dark">
                     <Navbar.Brand href="/">Home</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
                     {isAuthorized ?
