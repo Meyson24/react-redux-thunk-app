@@ -1,18 +1,16 @@
 import Post from '../Post/Post';
 import React from "react";
 
-
 class PostById extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        console.log('this.props', this.props.location.state.post)
-        const post = this.props.location.state.post
+        const book = this.props.location.state.book
         return (
             <>
-                <Post showLinkToPost={false} post={post}/>
+                <Post showLinkToBook={false} book={book}/>
             </>
         );
     }

@@ -1,9 +1,8 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {auth} from "../../actions";
-import {Redirect, withRouter} from "react-router";
-import AllPost from "../Posts/AllPost";
-import {Alert, Row, Button, Form, Col} from "react-bootstrap";
+import { connect } from "react-redux";
+import { auth } from "../../actions";
+import { Redirect, withRouter } from "react-router";
+import { Alert, Button, Form, Col } from "react-bootstrap";
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -15,8 +14,8 @@ class LoginPage extends React.Component {
 
         logout()
         this.state = {
-            username: '1',
-            password: '123',
+            username: 'fusion',
+            password: 'fusion',
             loading: false,
             error: '',
             redirectToReferrer: false
@@ -42,7 +41,6 @@ class LoginPage extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-
         this.setState({submitted: true});
         const {username, password} = this.state;
 
@@ -53,34 +51,39 @@ class LoginPage extends React.Component {
         }
 
         this.setState({loading: true});
-        this.props.auth(username)
-        return <Redirect to='/'/>
 
+        let credentials = JSON.stringify({
+            username,
+            password
+        });
+
+        this.props.auth(credentials)
+        return <Redirect to='/'/>
     }
 
     render() {
         const {username, password, error} = this.state;
         const {user} = this.props;
 
-        if (this.props.user.redirectToReferrer === true) {
+        if (this.props.user.redirectToReferrer) {
             return <Redirect to='/' push={true}/>
         }
 
         return (
             <>
-                    {user.error ?
-                        <Alert variant='danger'>
-                            {user.error}
-                        </Alert>
-                        : ''
-                    }
+                {user.error ?
+                    <Alert variant='danger'>
+                        {user.error}
+                    </Alert>
+                    : ''
+                }
 
                 <Col xs={4}>
                 <h2>Login</h2>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email"
+                        <Form.Control type="text"
                                       name="username"
                                       placeholder="Enter email"
                                       value={username}
@@ -108,7 +111,6 @@ class LoginPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log('state', state)
     return {
         user: state
     }

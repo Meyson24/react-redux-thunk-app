@@ -1,17 +1,18 @@
 import React from 'react'
-import {Button, ButtonGroup} from "react-bootstrap";
+import { Button, ButtonGroup, Col, Row } from "react-bootstrap";
 
-const SortPanel = ({sort, isActive}) => (
-    <ButtonGroup>
-        <Button onClick={sort('id')} className={isActive === 'default' ? 'active' : ''}
-                variant="outline-dark">Default</Button>
-        <Button onClick={(e) => sort('id')} className={isActive === 'id' ? 'active' : ''}
-                variant="outline-dark">ID</Button>
-        <Button onClick={sort('title')} className={isActive === 'title' ? 'active' : ''}
-                variant="outline-dark">Title</Button>
-        <Button onClick={(e) => sort('body')} className={isActive === 'body' ? 'active' : ''}
-                variant="outline-dark">Description</Button>
-    </ButtonGroup>
+const SortPanel = ({isSorting, isActive, methodOfSort}) => (
+        <Col style={{marginBottom: '20px'}} xs={4}>
+            <h4 className="center">Sort: {isActive} {methodOfSort}</h4>
+            <ButtonGroup>
+                <Button onClick={() => isSorting('title')} className={isActive === 'title' ? 'active' : ''}
+                        variant="outline-dark">Title</Button>
+                <Button onClick={() => isSorting('description')} className={isActive === 'description' ? 'active' : ''}
+                        variant="outline-dark">Description</Button>
+                <Button onClick={() => isSorting('price')} className={isActive === 'price' ? 'active' : ''}
+                        variant="outline-dark">Price</Button>
+            </ButtonGroup>
+        </Col>
 );
 
 export default SortPanel

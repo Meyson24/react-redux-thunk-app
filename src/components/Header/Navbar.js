@@ -1,6 +1,6 @@
 import React from 'react';
-import {Navbar, Nav, FormControl, Button, Form} from 'react-bootstrap';
-import {Redirect, withRouter} from "react-router-dom";
+import { Navbar, Nav, Button } from 'react-bootstrap';
+import { withRouter} from "react-router-dom";
 
 class NavbarHeader extends React.Component {
     constructor(props) {

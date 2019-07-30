@@ -1,68 +1,66 @@
 import axios from "axios";
 import _ from 'lodash'
 
-export const loadPosts = () => {
-
+export const loadBooks = () => {
     return dispatch => {
-        return axios('https://jsonplaceholder.typicode.com/posts')
-            .then(json => {
-                console.log(' ALL_POST')
-                dispatch(
-                    {type: "ALL_POSTS", data: json.data})
-            })
-            .catch(err => dispatch(
-                {type: "ERROR", msg: "Unable to fetch data"}))
-    }
-}
-
-export const addPost = (post) => {
-
-    return dispatch => {
-        return axios('https://jsonplaceholder.typicode.com/posts',
+        return axios.get('http://localhost:4000/books/',
             {
-                method: "POST",
-                mode: 'no-cors',
                 headers: {
-                    "Content-type": "application/json",
-                    'Accept': 'application/json',
-                },
-                data: post
-            })
-            .then(json => {
-                console.log('createPost json', json)
-                dispatch(
-                    {type: "ADD_POST", data: json.data})
-            })
-            .catch(err => dispatch(
-                {type: "ERROR", msg: "Unable to fetch data"}))
-    }
-}
-export const auth = (id) => {
-
-    return dispatch => {
-        return axios(`https://jsonplaceholder.typicode.com/posts/${1}`,
-            {
-                method: "GET",
-                mode: 'no-cors',
-                headers: {
-                    "Content-type": "application/json",
-                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 }
             })
             .then(json => {
-                console.log('getPost json', json, id === json.data.id)
-                // if(data.status == 200){
-                if (1 === json.data.id) {
-                    console.log('Successfully Login');
-                    localStorage.setItem('token', json.data.id);
-                    dispatch(
-                        {type: "AUTH_SUCCESS", data: json.data})
+                if(json.status === 200) {
+                    dispatch({type: "ALL_BOOKS", data: json.data})
                 } else {
+                    dispatch({type: "ERROR", msg: `Server error`})
+                }
+            })
+            .catch(err => dispatch(
+                {type: "ERROR", msg: `Server error: ${err}`}))
+    }
+}
+
+export const addBook = (book) => {
+    return dispatch => {
+        return axios.post('http://localhost:4000/books/new', book,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(json => {
+                if (json.status === 201) {
+                    dispatch(
+                        {type: "ADD_POST", data: json.data})
+                } else {
+                    dispatch(
+                        {type: "ERROR", msg: "Server Error"})
+                }
+            })
+            .catch(err => {
+                dispatch(
+                    {type: "ERROR", errorResponse: err.message})
+            })
+    }
+}
+export const auth = (credentials) => {
+    return dispatch => {
+        return axios.post('http://localhost:4000/auth/', credentials, {
+            headers: {'Content-Type': 'application/json'}
+        })
+            .then(json => {
+                if (json.status === 200) {
+                    if (json.data.token) {
+                        localStorage.setItem('token', json.data.token);
+                        dispatch({type: "AUTH_SUCCESS", data: json.data})
+                    }
+                } else if (json.status === 401) {
                     dispatch(
                         {type: "AUTH_ERROR", error: "Please enter valid email or password."})
                 }
             })
-            .catch(err => dispatch(
+            .catch(error => dispatch(
                 {type: "AUTH_ERROR", error: "Please enter valid email or password."}))
     }
 }
@@ -70,8 +68,7 @@ export const auth = (id) => {
 export const sortByParameterAndMethod = (posts, param, method) => {
     return dispatch => {
         try {
-            const sortedPosts = _.orderBy(posts, [param],[method]);
-            console.log('sortedPosts action', sortedPosts)
+            const sortedPosts = _.orderBy(posts, [param], [method]);
             dispatch(
                 {type: "SORT_BY_PARAMETER", posts: sortedPosts})
         } catch (e) {

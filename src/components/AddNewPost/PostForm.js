@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {addPost} from '../../actions'
-import {Form, Button, Col} from "react-bootstrap";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addBook } from '../../actions'
+import { Form, Button, Col, Alert } from "react-bootstrap";
 
 class PostForm extends Component {
     constructor(props) {
         super(props)
-        this.state = {title: '', body: '', error: false};
+        this.state = {title: '', description: '', price: '', error: false};
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -14,15 +14,12 @@ class PostForm extends Component {
 
     handleChange(e) {
         e.persist();
-
         const {name, value} = e.target;
-
         this.setState({[name]: value});
-
-        const {title, body} = this.state;
+        const {title, description, price} = this.state;
 
         // hide error if user write
-        if (title && body) {
+        if (!(title && description && price)) {
             this.setState({error: false});
             return;
         }
@@ -30,84 +27,78 @@ class PostForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        const {title, description, price} = this.state;
 
-        const {title, body} = this.state;
-
-        if (!(title && body)) {
+        if (!(title && description && price)) {
             this.setState({error: true});
             return;
         }
 
-        const data = {
+        let book = JSON.stringify({
             title,
-            body
-        }
+            description,
+            price,
+        });
 
-        this.props.onAddPost(data)
-        this.setState({title: '', body: ''});
+        this.props.onAddBook(book);
+        this.setState({title: '', description: '', price: ''});
         this.props.history.push(`/`)
     }
 
     render() {
-        const {title, body, error} = this.state;
-
+        const {title, description, price, error} = this.state;
         return (
             <div>
-                <h1>Create Post</h1>
-                <Col xs={4}>
+                {error ?
+                    <Alert variant='danger'>
+                        Please enter title, description and price.
+                    </Alert>
+                    : ''
+                }
+                <h1>Create Book</h1>
+                <Col xs={5}>
                     <Form onSubmit={this.handleSubmit}>
                         <Form.Group controlId="formTitle">
                             <Form.Label>Title</Form.Label>
                             <Form.Control type="text"
                                           name="title"
-                                          placeholder="Enter Title"
+                                          placeholder="Enter title"
                                           value={title}
                                           onChange={this.handleChange}/>
-                            {error ?
-                                <Form.Text style={{color: "red"}} className="text">Please enter title.</Form.Text> : ''}
                         </Form.Group>
 
                         <Form.Group controlId="formBody">
-                            <Form.Label>Body</Form.Label>
+                            <Form.Label>Description</Form.Label>
                             <Form.Control type="text"
-                                          name="body"
-                                          placeholder="Enter body"
-                                          value={body}
+                                          name="description"
+                                          placeholder="Enter description"
+                                          value={description}
                                           onChange={this.handleChange}/>
-                            {error ?
-                                <Form.Text style={{color: "red"}} className="text">Please enter body.</Form.Text> : ''}
+                        </Form.Group>
+
+                        <Form.Group controlId="formBody">
+                            <Form.Label>Price</Form.Label>
+                            <Form.Control type="text"
+                                          name="price"
+                                          placeholder="Enter price"
+                                          value={price}
+                                          onChange={this.handleChange}/>
                         </Form.Group>
 
                         <Button variant="primary" type="submit">
-                            Submit
+                            Create
                         </Button>
                     </Form>
                 </Col>
-                {/*<form onSubmit={this.handleSubmit}>*/}
-                {/*    <input required type="text" name='title' value={title} onChange={this.handleChange}*/}
-                {/*           placeholder="Enter Post Title"/>*/}
-                {/*    <br/><br/>*/}
-                {/*    <input required type="text" name='body' value={body} onChange={this.handleChange}*/}
-                {/*           placeholder="Enter Post Body"/>*/}
-                {/*    <br/><br/>*/}
-                {/*    <input type="submit" value="Submit"/>*/}
-                {/*</form>*/}
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        posts: state
-    }
-}
-
 const mapDispatchProps = (dispatch) => {
     return {
-        onAddPost: (data) => dispatch(addPost(data))
+        onAddBook: (book) => dispatch(addBook(book))
     }
-}
+};
 
 export default connect(null, mapDispatchProps)(PostForm);
-// export default connect()(PostForm);
