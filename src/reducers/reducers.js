@@ -1,9 +1,19 @@
-const reducers = (state = [], action) => {
+const GET_ALL_BOOKS  = 'GET_ALL_BOOKS';
+
+const initialState = {
+    pagination: {
+        total: 0
+    }
+};
+
+const reducers = (state = initialState, action) => {
     switch (action.type) {
-        case 'ALL_BOOKS':
+        case GET_ALL_BOOKS:
+            return {...state, books: action.data.books, pagination: action.data.pagination};
+        case 'GET_BOOK_BY_ID':
             return action.data;
         case 'ADD_POST':
-            return state.concat([action.data]);
+            return ({...state,...action.data});
         case 'AUTH_SUCCESS':
             return {redirectToReferrer: true};
         case 'ERROR':

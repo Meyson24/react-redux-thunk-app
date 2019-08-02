@@ -2,7 +2,7 @@ import React from 'react'
 import { Jumbotron, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const Post = ({book, showLinkToBook}) => (
+const BookItem = ({book, showLinkToBook}) => (
     <Jumbotron>
         <h1>Title: {book.title}</h1>
         <p>Description: {book.description}</p>
@@ -10,8 +10,7 @@ const Post = ({book, showLinkToBook}) => (
         <p>
             {showLinkToBook ?
                     <Link style={{ textDecoration: 'none' }} to={{
-                        pathname: `/post/${book.id}`,
-                        state: {book}
+                        pathname: `/post/${book.id}`
                     }}>
                         <Button variant="success">
                             See detail
@@ -23,4 +22,4 @@ const Post = ({book, showLinkToBook}) => (
     </Jumbotron>
 );
 
-export default Post
+export default BookItem

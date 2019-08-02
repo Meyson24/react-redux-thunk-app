@@ -1,18 +1,18 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { auth } from "../../actions";
+import { auth, logout } from "../../actions/user";
 import { Redirect, withRouter } from "react-router";
 import { Alert, Button, Form, Col } from "react-bootstrap";
 
-class LoginPage extends React.Component {
+class Login extends React.Component {
     constructor(props) {
         super(props);
+        this.props.logout();
+        // function logout() {
+        //     localStorage.removeItem('token');
+        // }
 
-        function logout() {
-            localStorage.removeItem('token');
-        }
-
-        logout()
+        // logout()
         this.state = {
             username: 'fusion',
             password: 'fusion',
@@ -57,23 +57,28 @@ class LoginPage extends React.Component {
             password
         });
 
-        this.props.auth(credentials)
-        return <Redirect to='/'/>
+        this.props.auth(credentials);
+        return this.props.history.push('/')
     }
 
     render() {
         const {username, password, error} = this.state;
-        const {user} = this.props;
 
-        if (this.props.user.redirectToReferrer) {
-            return <Redirect to='/' push={true}/>
+        const {user} = this.props;
+        console.log('this.props.user', this.props.user)
+        if (this.props.user.isAuthenticated) {
+            return <Redirect to="/"/>
         }
+
+        // if (this.props.user.redirectToReferrer) {
+        //     return <Redirect to='/' push={true}/>
+        // }
 
         return (
             <>
-                {user.error ?
+                {user.errorOfAuthenticated ?
                     <Alert variant='danger'>
-                        {user.error}
+                        {user.errorOfAuthenticated}
                     </Alert>
                     : ''
                 }
@@ -87,7 +92,8 @@ class LoginPage extends React.Component {
                                       name="username"
                                       placeholder="Enter email"
                                       value={username}
-                                      onChange={this.handleChange}/>
+                                      onChange={this.handleChange}
+                        />
                         { error ? <Form.Text style={{color: "red"}} className="text">Please enter email.</Form.Text> : ''}
                     </Form.Group>
 
@@ -110,16 +116,18 @@ class LoginPage extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (store) => {
+    console.log('store', store)
     return {
-        user: state
+        user: store.user
     }
-}
+};
 
 const mapDispatchProps = (dispatch) => {
     return {
-        auth: (id) => dispatch(auth(id))
+        auth: (id) => dispatch(auth(id)),
+        logout: () => dispatch(logout())
     }
 }
 
-export default connect(mapStateToProps, mapDispatchProps)(withRouter(LoginPage));
+export default connect(mapStateToProps, mapDispatchProps)(withRouter(Login));

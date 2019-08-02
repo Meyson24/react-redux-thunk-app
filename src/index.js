@@ -9,18 +9,23 @@ import App from './App';
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux';
-import reducer from './reducers/reducers';
+// import reducer from './reducers/reducers';
 import { BrowserRouter, Route } from 'react-router-dom';
-import PostForm from "./components/AddNewPost/PostForm";
-import LoginPage from "./components/Login/LoginPage";
+
+import PostForm from "./containers/AddBook/Book";
+import LoginPage from "./containers/Login/Login";
+import PostById from "./containers/Book/Book";
+
+import NavbarHeader from './components/Header/Navbar';
+import { rootReducer } from './reducers'
 import { PrivateRoute } from './routes/PrivateRouter';
-import PostById from "./components/Post/PostById";
-import NavbarHeader from './components/Header/Navbar'
+
+import logger from 'redux-logger'
 import { createBrowserHistory } from "history";
 import { Container } from "react-bootstrap";
 
 const customHistory = createBrowserHistory();
-const store = createStore(reducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
 const Root =
     <Provider store={store}>
@@ -29,7 +34,7 @@ const Root =
                 <NavbarHeader/>
                 <PrivateRoute exact path="/" component={App}/>
                 <Route path="/login" component={LoginPage}/>
-                <PrivateRoute exact path="/post/:id" component={PostById}/>
+                <PrivateRoute path="/post/:id" component={PostById}/>
                 <PrivateRoute exact path="/post" component={PostForm}/>
             </BrowserRouter>
         </Container>
