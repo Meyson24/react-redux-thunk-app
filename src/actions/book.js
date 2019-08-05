@@ -24,12 +24,12 @@ export const getBooks = ({page, per_page}) => {
                 if(json.status === 200) {
                     dispatch({type: GET_ALL_BOOKS_SUCCESS, data: json.data})
                 } else {
-                    dispatch({type: REQUEST_ERROR, msg: `Server error`})
+                    dispatch({type: REQUEST_ERROR, data: {errorMsg: `Server error`}})
                 }
             })
             .catch(err => dispatch(
-                {type: REQUEST_ERROR, msg: `Server error: ${err}`}))
-    }
+                {type: REQUEST_ERROR, data: {errorMsg: err.message}})
+            )}
 };
 
 export const getBookById = id => {
@@ -46,12 +46,12 @@ export const getBookById = id => {
                 if(json.status === 200) {
                     dispatch({type: GET_BOOK_BY_ID_SUCCESS, data: json.data})
                 } else {
-                    dispatch({type: REQUEST_ERROR, msg: `Server error`})
+                    dispatch({type: REQUEST_ERROR, data: {errorMsg: `Server error`}})
                 }
             })
             .catch(err => dispatch(
-                {type: REQUEST_ERROR, msg: `Server error: ${err}`}))
-    }
+                {type: REQUEST_ERROR, data: {errorMsg: err.message}})
+            )}
 };
 
 export const addBook = book => {
@@ -67,13 +67,12 @@ export const addBook = book => {
                 if (json.status === 201) {
                     dispatch({type: ADD_BOOK_SUCCESS, data: json.data})
                 } else {
-                    dispatch(
-                        {type: REQUEST_ERROR, msg: "Server Error"})
+                    dispatch({type: REQUEST_ERROR, data: {errorMsg: `Server error`}})
                 }
             })
             .catch(err => {
                 dispatch(
-                    {type: REQUEST_ERROR, errorResponse: err.message})
+                    {type: REQUEST_ERROR, data: {errorMsg: err.message}})
             })
     }
 };
@@ -90,10 +89,10 @@ export const sortByParameterAndMethod = ({sortItem, sortMethod}) => {
                         if(json.status === 200) {
                             dispatch({type: GET_ALL_BOOKS_SUCCESS, data: json.data})
                         } else {
-                            dispatch({type: REQUEST_ERROR, msg: `Server error`})
+                            dispatch({type: REQUEST_ERROR, data: {errorMsg: `Server error`}})
                         }
                     })
                     .catch(err => dispatch(
-                        {type: REQUEST_ERROR, msg: `Server error: ${err}`}))
-            }
+                        {type: REQUEST_ERROR, data: {errorMsg: err.message}})
+                    )}
         };

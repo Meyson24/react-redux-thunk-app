@@ -15,8 +15,8 @@ class Books extends Component {
     constructor(props) {
         super(props);
         this.state = {
-                isActive: 'default',
-                methodOfSort: 'asc',
+            isActive: 'default',
+            methodOfSort: 'asc',
             }
     }
 
