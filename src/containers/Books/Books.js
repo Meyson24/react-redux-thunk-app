@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types'
 
 import { sortByParameterAndMethod } from '../../actions/book'
 import { getBooks } from '../../actions/book'
@@ -9,24 +8,16 @@ import BookItem from '../../components/Book/BookItem';
 import SortPanel from "../../components/SortPanel/SortPanel";
 import PaginationItems from "../../components/Pagination/PaginationItems";
 
+import { Row } from "react-bootstrap";
+import Col from "react-bootstrap/es/Col";
+
 class Books extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            // isActive: 'default',
-            // methodOfSort: 'asc',
-            // id: '',
-            // title: '',
-            // descriptions: '',
-            // price: 0,
-            // users: null,
-            total: null,
-            per_page: null,
-            currentPage: 1,
-            totalPagesNum: 0,
-            totalPages: [],
-        }
+                isActive: 'default',
+                methodOfSort: 'asc',
+            }
     }
 
     componentDidMount() {
@@ -35,19 +26,6 @@ class Books extends Component {
 
     onGoToPage = page => {
         this.props.getBooks({page: page, per_page:3});
-
-        const totalPagesNum = this.props.pagination.total;
-        const currentPage = this.props.pagination.page;
-        // console.log('onGoToPage currentPage totalPagesNum', currentPage, totalPagesNum);
-
-        const totalPages = [...Array(totalPagesNum).keys()].map(i => ++i);
-        // console.log('onGoToPage totalPages', totalPages)
-
-        this.setState({
-            totalPages,
-            totalPagesNum,
-            currentPage: parseInt(currentPage)
-        });
     };
 
     sortingOfBooks = parameter => {
@@ -58,41 +36,33 @@ class Books extends Component {
 
     render() {
         const {total, page} = this.props.pagination;
-        const totalPages = [...Array(total).keys()].map(i => ++i);
-        const currentPage = parseInt(page);
         return (
             <>
-                <h1>All Posts</h1>
-                <SortPanel isSorting={this.sortingOfBooks} isActive={this.state.isActive} methodOfSort={this.state.methodOfSort}/>
+                <h1 className="align-content-center">All Posts</h1>
+                <Row className="justify-content-md-center">
+                    <SortPanel isSorting={this.sortingOfBooks} isActive={this.state.isActive}
+                               methodOfSort={this.state.methodOfSort}/>
+                </Row>
 
-                {/*{this.state.totalPages ?*/}
-                    <PaginationItems currentPage={currentPage}
-                                     totalPagesNum={total}
-                                     totalPages={totalPages}
-                                     onGoToPage={this.onGoToPage}/>
-                {/*: ''*/}
-                {/*}*/}
-
-                {this.props.books ?
-                    this.props.books.map((book) => (
-                        <div key={book.id}>
-                            <BookItem key={book.id} book={book} showLinkToBook={true}/>
-                        </div>))
-                    : ''
+                {this.props.books.map((book) => (
+                    <div key={book.id}>
+                        <BookItem key={book.id} book={book} showLinkToBook={true}/>
+                    </div>))
                 }
 
+                <Row className="justify-content-md-center">
+                    <Col md="auto">
+                        <PaginationItems page={page}
+                                         total={total}
+                                         onGoToPage={this.onGoToPage}/>
+                    </Col>
+                </Row>
             </>
         );
     }
 }
 
-// Books.propTypes = {
-//     books: PropTypes.array.isRequired,
-//     pagination: PropTypes.object.isRequired,
-// };
-
 const mapStateToProps = (store) => {
-    console.log('store', store)
     return {
         books: store.book.books,
         pagination: store.book.pagination

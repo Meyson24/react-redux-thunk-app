@@ -1,8 +1,9 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import { withRouter } from "react-router-dom";
+
 import { logout } from "../../actions/user";
-import { connect } from "react-redux";
 
 class NavbarHeader extends React.Component {
     constructor(props) {
@@ -41,6 +42,6 @@ const mapDispatchProps = (dispatch) => {
     return {
         logout: () => dispatch(logout())
     }
-}
+};
 
 export default connect(null, mapDispatchProps)(withRouter(NavbarHeader));

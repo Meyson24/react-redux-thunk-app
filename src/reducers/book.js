@@ -5,7 +5,8 @@ import {
     GET_BOOK_BY_ID_SUCCESS,
     ADD_BOOK_REQUEST,
     ADD_BOOK_SUCCESS,
-    SORTED_BOOKS_BY_PARAMETER_AND_METHOD
+    SORTED_BOOKS_BY_PARAMETER_AND_METHOD,
+    REQUEST_ERROR
 } from '../actions/book'
 
 const initialState = {
@@ -39,10 +40,8 @@ export function bookReducer(state = initialState, action) {
             return ({...state,...action.data});
         case SORTED_BOOKS_BY_PARAMETER_AND_METHOD:
             return ({...state, isLoading: true});
-        case 'ERROR':
+        case REQUEST_ERROR:
             return {errorResponse: action.errorResponse};
-        case 'SORT_BY_PARAMETER':
-            return  action.posts;
         default:
             return state;
     }

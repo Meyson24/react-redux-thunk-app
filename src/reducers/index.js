@@ -5,4 +5,4 @@ import { userReducer } from './user'
 export const rootReducer = combineReducers({
     book: bookReducer,
     user: userReducer,
-})
+});

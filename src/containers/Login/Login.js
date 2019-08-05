@@ -7,19 +7,12 @@ import { Alert, Button, Form, Col } from "react-bootstrap";
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.props.logout();
-        // function logout() {
-        //     localStorage.removeItem('token');
-        // }
-
-        // logout()
         this.state = {
             username: 'fusion',
             password: 'fusion',
             loading: false,
             error: '',
             redirectToReferrer: false
-
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -28,15 +21,15 @@ class Login extends React.Component {
 
     handleChange(e) {
         e.persist();
-        const {name, value} = e.target;
-        this.setState({[name]: value});
-        const {username, password} = this.state;
 
-        // hide error if user write
         if (username && password) {
             this.setState({error: false});
             return;
         }
+
+        const {name, value} = e.target;
+        this.setState({[name]: value});
+        const {username, password} = this.state;
     }
 
     handleSubmit(e) {
@@ -44,7 +37,6 @@ class Login extends React.Component {
         this.setState({submitted: true});
         const {username, password} = this.state;
 
-        // stop here if form is invalid
         if (!(username && password)) {
             this.setState({error: true});
             return;
@@ -63,17 +55,11 @@ class Login extends React.Component {
 
     render() {
         const {username, password, error} = this.state;
-
         const {user} = this.props;
-        console.log('this.props.user', this.props.user)
+
         if (this.props.user.isAuthenticated) {
             return <Redirect to="/"/>
         }
-
-        // if (this.props.user.redirectToReferrer) {
-        //     return <Redirect to='/' push={true}/>
-        // }
-
         return (
             <>
                 {user.errorOfAuthenticated ?
@@ -117,7 +103,6 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = (store) => {
-    console.log('store', store)
     return {
         user: store.user
     }
@@ -128,6 +113,6 @@ const mapDispatchProps = (dispatch) => {
         auth: (id) => dispatch(auth(id)),
         logout: () => dispatch(logout())
     }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchProps)(withRouter(Login));

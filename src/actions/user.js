@@ -1,9 +1,9 @@
 import axios from "axios";
-import {GET_ALL_BOOKS_REQUEST} from "./book";
 
 export const AUTH_REQUEST  = 'AUTH_REQUEST';
 export const AUTH_REQUEST_SUCCESS  = 'AUTH_REQUEST_SUCCESS';
 export const AUTH_REQUEST_ERROR  = 'AUTH_REQUEST_ERROR';
+
 export const LOGOUT  = 'LOGOUT';
 
 export const logout = () => {

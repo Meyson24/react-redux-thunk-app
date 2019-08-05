@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, ButtonGroup, Col, Row} from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 const SortingButton = ({isSorting, itemSorting, isActive, methodOfSort}) => (
     <Button onClick={() => isSorting(itemSorting)}
@@ -9,9 +9,9 @@ const SortingButton = ({isSorting, itemSorting, isActive, methodOfSort}) => (
         {itemSorting.toUpperCase()}
         <span
             className={
-                methodOfSort === 'asc' ? 'arrow-icon open' : 'arrow-icon'
+                methodOfSort === 'asc' ? 'arrow-icon' : 'arrow-icon open'
                 &&
-                isActive === itemSorting ? 'arrow-icon' : 'arrow-icon open'
+                isActive === itemSorting ? 'arrow-icon open' : 'arrow-icon'
             }>
             <span className="left-bar"></span>
             <span className="right-bar"></span>

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Col from "react-bootstrap/Col";
 
 import { addBook } from '../../actions/book'
 import { AddBookForm } from "../../components/Book/AddBookForm";
-import Col from "react-bootstrap/Col";
 
 class Book extends Component {
     constructor(props) {

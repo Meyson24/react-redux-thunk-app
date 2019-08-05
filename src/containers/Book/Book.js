@@ -1,8 +1,8 @@
-import BookItem from '../../components/Book/BookItem';
 import React from "react";
-// import {loadBookById} from "../../middlewares";
-import {getBookById} from "../../actions/book";
 import {connect} from "react-redux";
+
+import {getBookById} from "../../actions/book";
+import BookItem from '../../components/Book/BookItem';
 
 class Book extends React.Component {
     constructor(props) {
@@ -13,16 +13,13 @@ class Book extends React.Component {
         console.log('this.props.match.params', this.props.match.params);
         const { id } = this.props.match.params;
         this.props.getBookById(id);
-        // this.getBookById(id);
-        console.log('this.props', this.props)
     }
 
-    getBookById = async id => {
-        await this.props.getBookById(id);
+    getBookById = id => {
+        this.props.getBookById(id);
     };
 
     render() {
-        // const book = this.props.location.state.book;
         const { book } = this.props.book;
         return (
             <>

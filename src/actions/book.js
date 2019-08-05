@@ -11,13 +11,7 @@ export const ADD_BOOK_SUCCESS  = 'ADD_BOOK_SUCCESS';
 
 export const SORTED_BOOKS_BY_PARAMETER_AND_METHOD  = 'SORTED_BOOKS_BY_PARAMETER_AND_METHOD';
 
-export function getAllBooks(books) {
-
-    return {
-        type: GET_ALL_BOOKS_SUCCESS,
-        data: books
-    }
-}
+export const REQUEST_ERROR  = 'REQUEST_ERROR';
 
 export const getBooks = ({page, per_page}) => {
     return dispatch => {
@@ -30,11 +24,11 @@ export const getBooks = ({page, per_page}) => {
                 if(json.status === 200) {
                     dispatch({type: GET_ALL_BOOKS_SUCCESS, data: json.data})
                 } else {
-                    dispatch({type: "ERROR", msg: `Server error`})
+                    dispatch({type: REQUEST_ERROR, msg: `Server error`})
                 }
             })
             .catch(err => dispatch(
-                {type: "ERROR", msg: `Server error: ${err}`}))
+                {type: REQUEST_ERROR, msg: `Server error: ${err}`}))
     }
 };
 
@@ -53,11 +47,11 @@ export const getBookById = id => {
                 if(json.status === 200) {
                     dispatch({type: GET_BOOK_BY_ID_SUCCESS, data: json.data})
                 } else {
-                    dispatch({type: "ERROR", msg: `Server error`})
+                    dispatch({type: REQUEST_ERROR, msg: `Server error`})
                 }
             })
             .catch(err => dispatch(
-                {type: "ERROR", msg: `Server error: ${err}`}))
+                {type: REQUEST_ERROR, msg: `Server error: ${err}`}))
     }
 };
 
@@ -75,12 +69,12 @@ export const addBook = book => {
                     dispatch({type: ADD_BOOK_SUCCESS, data: json.data})
                 } else {
                     dispatch(
-                        {type: "ERROR", msg: "Server Error"})
+                        {type: REQUEST_ERROR, msg: "Server Error"})
                 }
             })
             .catch(err => {
                 dispatch(
-                    {type: "ERROR", errorResponse: err.message})
+                    {type: REQUEST_ERROR, errorResponse: err.message})
             })
     }
 };
@@ -98,10 +92,10 @@ export const sortByParameterAndMethod = ({sortItem, sortMethod}) => {
                         if(json.status === 200) {
                             dispatch({type: GET_ALL_BOOKS_SUCCESS, data: json.data})
                         } else {
-                            dispatch({type: "ERROR", msg: `Server error`})
+                            dispatch({type: REQUEST_ERROR, msg: `Server error`})
                         }
                     })
                     .catch(err => dispatch(
-                        {type: "ERROR", msg: `Server error: ${err}`}))
+                        {type: REQUEST_ERROR, msg: `Server error: ${err}`}))
             }
         };
