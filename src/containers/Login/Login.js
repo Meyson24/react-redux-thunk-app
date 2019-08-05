@@ -21,15 +21,14 @@ class Login extends React.Component {
 
     handleChange(e) {
         e.persist();
+        const {name, value} = e.target;
+        this.setState({[name]: value});
+        const {username, password} = this.state;
 
         if (username && password) {
             this.setState({error: false});
             return;
         }
-
-        const {name, value} = e.target;
-        this.setState({[name]: value});
-        const {username, password} = this.state;
     }
 
     handleSubmit(e) {

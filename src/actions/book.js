@@ -43,7 +43,6 @@ export const getBookById = id => {
                 }
             })
             .then(json => {
-                console.log('json', json.data);
                 if(json.status === 200) {
                     dispatch({type: GET_BOOK_BY_ID_SUCCESS, data: json.data})
                 } else {
@@ -81,7 +80,6 @@ export const addBook = book => {
 
 export const sortByParameterAndMethod = ({sortItem, sortMethod}) => {
     return (dispatch, getState) => {
-        console.log('sortByParameterAndMethod getState', getState())
         const {book} = getState();
                 dispatch({type: SORTED_BOOKS_BY_PARAMETER_AND_METHOD});
                 return axios.get(

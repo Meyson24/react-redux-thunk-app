@@ -37,25 +37,3 @@ class App extends Component {
     }
 }
 export default App;
-
-// import React, { Component } from 'react';
-// import Books from './containers/Books/Books';
-// import {Provider} from "react-redux";
-// import {Container} from "react-bootstrap";
-// import {BrowserRouter, Route} from "react-router-dom";
-// import NavbarHeader from "./components/Header/Navbar";
-// import {PrivateRoute} from "./routes/PrivateRouter";
-// import LoginPage from "./containers/Login/Login";
-// import PostById from "./containers/Book/Book";
-// import PostForm from "./containers/AddBook/Book";
-//
-// class App extends Component {
-//     render() {
-//         return (
-//             <div className="App">
-//                 <Books />
-//             </div>
-//         );
-//     }
-// }
-// export default App;
