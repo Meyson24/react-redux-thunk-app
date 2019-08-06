@@ -26,13 +26,13 @@ class Book extends React.Component {
     }
 }
 
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
     return {
         book: store.book
     }
 };
 
-const mapDispatchProps = (dispatch) => {
+const mapDispatchProps = dispatch => {
     return {
         getBookById: (id) => dispatch(getBookById(id))
     }

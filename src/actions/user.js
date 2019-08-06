@@ -1,12 +1,11 @@
 import axios from "axios";
+import {baseAPI} from './../services/api'
 
 export const AUTH_REQUEST  = 'AUTH_REQUEST';
 export const AUTH_REQUEST_SUCCESS  = 'AUTH_REQUEST_SUCCESS';
 export const AUTH_REQUEST_ERROR  = 'AUTH_REQUEST_ERROR';
 
 export const LOGOUT  = 'LOGOUT';
-
-const BACKEND_AUTH_URL = 'http://localhost:4000/auth/';
 
 export const logout = () => {
     return dispatch => {
@@ -15,13 +14,10 @@ export const logout = () => {
     }
 };
 
-export const auth = (credentials) => {
+export const auth = credentials => {
     return dispatch => {
         dispatch({type: AUTH_REQUEST});
-
-        return axios.post(`${BACKEND_AUTH_URL}`, credentials, {
-            headers: {'Content-Type': 'application/json'}
-        })
+        return baseAPI.post(`/auth`, credentials)
             .then(json => {
                 if (json.status === 200) {
                     if (json.data.token) {
@@ -34,6 +30,9 @@ export const auth = (credentials) => {
                 }
             })
             .catch(error => dispatch(
-                {type: "AUTH_REQUEST_ERROR", error: "Please enter valid email or password."}))
+                {
+                    type: "AUTH_REQUEST_ERROR",
+                    error: {title: "Please enter valid email or password.", description: error.message}
+                }))
     }
 };

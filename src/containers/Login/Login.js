@@ -101,13 +101,13 @@ class Login extends React.Component {
     }
 }
 
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
     return {
         user: store.user
     }
 };
 
-const mapDispatchProps = (dispatch) => {
+const mapDispatchProps = dispatch => {
     return {
         auth: (id) => dispatch(auth(id)),
         logout: () => dispatch(logout())

@@ -27,7 +27,7 @@ class Book extends Component {
     }
 }
 
-const mapDispatchProps = (dispatch) => {
+const mapDispatchProps = dispatch => {
     return {
         onAddBook: (book) => dispatch(addBook(book))
     }
