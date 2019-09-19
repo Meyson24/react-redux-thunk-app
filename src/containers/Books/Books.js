@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
-import { sortByParameterAndMethod } from '../../actions/book'
-import { getBooks } from '../../actions/book'
+import {sortByParameterAndMethod} from '../../actions/book'
+import {getBooks} from '../../actions/book'
 
 import BookItem from '../../components/Book/BookItem';
 import SortPanel from "../../components/SortPanel/SortPanel";
 import PaginationItems from "../../components/Pagination/PaginationItems";
 
-import { Row } from "react-bootstrap";
+import {Row} from "react-bootstrap";
 import Col from "react-bootstrap/es/Col";
 
 class Books extends Component {
@@ -17,28 +17,31 @@ class Books extends Component {
         this.state = {
             isActive: 'default',
             methodOfSort: 'asc',
-            }
+        }
     }
 
     componentDidMount() {
-        this.onGoToPage(1);
+        this.goToBookPage(1);
     }
 
-    onGoToPage = page => {
-        this.props.getBooks({page: page, per_page:3});
+    goToBookPage = async page => {
+        await this.props.getBooks({page: page, per_page: 3});
     };
 
     sortingOfBooks = parameter => {
         const methodOfSort = this.state.methodOfSort === 'asc' ? 'desc' : 'asc';
+
         this.setState({methodOfSort: methodOfSort, isActive: parameter});
         this.props.sortByParameterAndMethod({sortItem: parameter, sortMethod: methodOfSort})
     };
 
     render() {
         const {total, page} = this.props.pagination;
+
         return (
             <>
                 <h1 className="align-content-center">All Posts</h1>
+
                 <Row className="justify-content-md-center">
                     <SortPanel isSorting={this.sortingOfBooks} isActive={this.state.isActive}
                                methodOfSort={this.state.methodOfSort}/>

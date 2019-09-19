@@ -8,11 +8,18 @@ import { AddBookForm } from "../../components/Book/AddBookForm";
 class Book extends Component {
     constructor(props) {
         super(props)
-        this.state = {title: '', description: '', price: '', errorTitle: false, errorDescription: false, errorPrice: false, error: ''};
+        this.state = {
+            title: '',
+            description: '',
+            price: '',
+            errorTitle: false,
+            errorDescription: false,
+            errorPrice: false,
+            error: ''};
     }
 
     handleSubmit = book => {
-        this.props.onAddBook(book);
+        this.props.createBook(book);
         this.props.history.push('/')
     }
 
@@ -29,7 +36,7 @@ class Book extends Component {
 
 const mapDispatchProps = dispatch => {
     return {
-        onAddBook: (book) => dispatch(addBook(book))
+        createBook: (book) => dispatch(addBook(book))
     }
 };
 

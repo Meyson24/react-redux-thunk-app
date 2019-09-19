@@ -2,7 +2,6 @@ import React from 'react'
 import { Pagination } from "react-bootstrap";
 
 const PaginationItems = ({page, total, onGoToPage}) => {
-
     const totalPages = [...Array(total).keys()].map(i => ++i);
     const currentPage = parseInt(page);
 

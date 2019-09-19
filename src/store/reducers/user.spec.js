@@ -5,7 +5,7 @@ import {
     AUTH_REQUEST_SUCCESS,
     AUTH_REQUEST_ERROR,
     LOGOUT,
-} from '../actions/user'
+} from '../../actions/user'
 
 describe('users reducer', () => {
 

@@ -16,16 +16,20 @@ class NavbarHeader extends React.Component {
     };
 
     render() {
-        const { isAuthenticated } = this.props.user;
+        const { currentUser } = this.props.user;
         return (
             <>
                 <Navbar style={{marginBottom: "20px"}} collapseOnSelect expand="lg" bg="dark" variant="dark">
                     <Navbar.Brand href="/">Home</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
-                    {isAuthenticated ?
+                    {currentUser.isAuthenticated ?
                         <Navbar.Collapse id="responsive-navbar-nav">
                             <Nav className="mr-auto">
                                 <Nav.Link href="/post">Create post</Nav.Link>
+                                {currentUser.role === 'admin' ?
+                                    <Nav.Link href="/users">All Users</Nav.Link>
+                                    : ""
+                                }
                             </Nav>
                             <Nav>
                                 <Button onClick={this.logout} variant="outline-light">Logout</Button>

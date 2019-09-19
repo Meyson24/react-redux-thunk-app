@@ -20,6 +20,7 @@ class Book extends React.Component {
 
     render() {
         const {book} = this.props.book;
+
         return (
             <BookItem showLinkToBook={false} book={book}/>
         );

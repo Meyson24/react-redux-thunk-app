@@ -9,7 +9,7 @@ import {
     ADD_BOOK_SUCCESS,
     SORTED_BOOKS_BY_PARAMETER_AND_METHOD,
     REQUEST_ERROR
-} from '../actions/book'
+} from '../../actions/book'
 
 describe('books reducer', () => {
 

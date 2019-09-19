@@ -1,17 +1,12 @@
-import axios from "axios";
 import {baseAPI} from './../services/api'
 
 export const GET_ALL_BOOKS_REQUEST = 'GET_ALL_BOOKS_REQUEST';
 export const GET_ALL_BOOKS_SUCCESS = 'GET_ALL_BOOKS_SUCCESS';
-
 export const GET_BOOK_BY_ID_REQUEST = 'GET_BOOK_BY_ID_REQUEST';
 export const GET_BOOK_BY_ID_SUCCESS = 'GET_BOOK_BY_ID_SUCCESS';
-
 export const ADD_BOOK_REQUEST = 'ADD_BOOK_REQUEST';
 export const ADD_BOOK_SUCCESS = 'ADD_BOOK_SUCCESS';
-
 export const SORTED_BOOKS_BY_PARAMETER_AND_METHOD = 'SORTED_BOOKS_BY_PARAMETER_AND_METHOD';
-
 export const REQUEST_ERROR = 'REQUEST_ERROR';
 
 export const getBooks = ({page, per_page}) => {
@@ -71,7 +66,7 @@ export const sortByParameterAndMethod = ({sortItem, sortMethod}) => {
         const {book} = getState();
         dispatch({type: SORTED_BOOKS_BY_PARAMETER_AND_METHOD});
         return baseAPI.get(
-            `books/?page=${book.pagination.page}&per_page=${book.pagination.per_page}&sort_item=${sortItem}&sort_method=${sortMethod}`
+            `books?page=${book.pagination.page}&per_page=${book.pagination.per_page}&sortItem=${sortItem}&sortMethod=${sortMethod}`
         )
             .then(json => {
                 if (json.status === 200) {
