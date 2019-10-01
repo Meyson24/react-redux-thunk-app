@@ -8,6 +8,7 @@ import {TaskForm} from "../../components/Task/TaskForm";
 class CreateTask extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             descriptionOfTask: '',
         };
@@ -20,10 +21,10 @@ class CreateTask extends Component {
     handleSubmit = async taskInput => {
         const { userId, planId } = this.props.match.params;
         const { descriptionOfTask:description } = this.state;
-        const params = {planId, description, title: taskInput.title}
+        const params = {planId, description, title: taskInput.title};
 
         await this.props.createTask(params);
-        this.props.history.push(`/users/${userId}`)
+        this.props.history.push(`/users/${userId}/plan`)
     };
 
     render() {

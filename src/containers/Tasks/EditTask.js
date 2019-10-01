@@ -30,7 +30,7 @@ class EditTask extends Component {
         const params = {description, title: taskInfo.title}
 
         this.props.updateTaskById(taskId, params);
-        this.props.history.push(`/users/${userId}`)
+        this.props.history.push(`/users/${userId}/plan`)
     };
 
     render() {

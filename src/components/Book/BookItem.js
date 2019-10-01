@@ -7,7 +7,7 @@ const BookItem = ({book, showLinkToBook}) => (
         <h1>Title: {book.title}</h1>
         <p>Description: {book.description}</p>
         <p>Price: {book.price}$</p>
-        <p>Author: {book.author.email}$</p>
+        {/*<p>Author: {book.author.email}$</p>*/}
         <p>
             {showLinkToBook ?
                     <Link style={{ textDecoration: 'none' }} to={{

@@ -2,21 +2,16 @@ import React from 'react'
 import {Jumbotron, Button} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
-const UserInfo = ({user}) => (
-    <Jumbotron>
-        <h4>{user.email}</h4>
-        <p>{user.first_name}</p>
-        <p>{user.last_name}</p>
+const UserInfo = ({children, user}) => {
+    return(
+        <Jumbotron>
+            <h4>{user.email}</h4>
+            <span>{user.first_name}</span><br/>
+            <span>{user.last_name}</span>
+            {children}
+        </Jumbotron>
+    );
 
-        <Link style={{ textDecoration: 'none' }} to={{
-            pathname: `/users/${user.id}`
-        }}>
-            <Button variant="success">
-                See detail
-            </Button>
-        </Link>
-
-    </Jumbotron>
-);
+};
 
 export default UserInfo

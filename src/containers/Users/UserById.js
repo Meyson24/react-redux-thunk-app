@@ -1,25 +1,21 @@
 import React from "react";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
-import * as moment from 'moment';
-import * as _ from 'lodash';
-import {getUserById} from "../../actions/user";
-import DraggableTaskList from '../../components/DraggbleLists/DraggableTaskList';
-
-import {changeSpentTimeOfTasks} from "../../actions/task";
-import {changeOrderTasksOfPlan} from "../../actions/plan";
-
 import {Link} from "react-router-dom";
-import {Button, Row, Col} from "react-bootstrap";
-import UserTask from "../../components/User/UserTask";
-import UserActionsButtons from "../../components/User/UserActionsButtons";
-import {deleteTask} from "../../actions/task";
-import AlertMessage from "../../components/AlertMessage/AlertMessage";
-import Html from 'slate-html-serializer'
-import {rules} from '../../components/RichTextEditor/rules.js'
-import CustomSpinner from "../../components/Spinner/CustomSpinner";
+import {Button, Row, Col, ButtonToolbar} from "react-bootstrap";
 
-const html = new Html({rules});
+import {getUserById} from "../../actions/user";
+import {changeSpentTimeOfTasks, getTasks} from "../../actions/task";
+import {changeOrderTasksOfPlan} from "../../actions/plan";
+import {deleteTask} from "../../actions/task";
+
+import DraggableList from '../../components/DraggbleList/DraggableList';
+import UserTask from "../../components/User/UserTask";
+import AlertMessage from "../../components/AlertMessage/AlertMessage";
+import CustomSpinner from "../../components/Spinner/CustomSpinner";
+import CustomButton from "../../components/Button/CustomButton";
+import MyModal from "../../components/Modal/MyModal";
+import CollapseBlock from "../../components/Modal/CollapseBlock";
 
 class UserById extends React.Component {
     constructor(props) {
@@ -27,12 +23,14 @@ class UserById extends React.Component {
         this.state = {
             tasks: [],
             planId: '',
+            show: false,
+            setShow: false,
         };
 
-        this.onDragEnd = this.onDragEnd.bind(this);
-        this.getTasks = this.getTasks.bind(this);
-        this.reorder = this.reorder.bind(this);
+        this.changeOrderItems = this.changeOrderItems.bind(this);
         this.deleteTask = this.deleteTask.bind(this);
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     async componentDidMount() {
@@ -44,10 +42,12 @@ class UserById extends React.Component {
     getUserInfoById = async id => {
         await this.props.getUserById(id);
 
-        if (this.props.user.userById.plan) await this.getTasks();
+        if (this.props.user.userById.plan) await this.getPreparedTasks();
+
+        await this.props.getTasks()
     };
 
-    getTasks = () => {
+    getPreparedTasks = async () => {
         const {order: orderValues, tasks, id: planId} = this.props.user.userById.plan;
         let tasksNew = [];
 
@@ -55,11 +55,13 @@ class UserById extends React.Component {
             tasks.forEach(item => {
                 if (orderValues[index] === item.id) return tasksNew.push(item);
             });
+
             current.draggableId = orderValues[index];
+
             return [...acc, current, orderValues[index]]
         }, []);
 
-        this.setState({tasks: tasksNew, planId});
+        await this.setState({tasks: tasksNew, planId});
     };
 
     deleteTask = async taskId => {
@@ -74,62 +76,45 @@ class UserById extends React.Component {
         await this.props.deleteTask(params);
     };
 
-    startStopTask = async taskId => {
-        const nowTime = moment().format('YYYY-MM-DD');
-        const params = {taskId, time: nowTime, planId: this.state.planId};
-
-        await this.props.changeSpentTimeOfTasks(params);
-        await this.refreshStatusTimeOfTask();
-    };
-
-    refreshStatusTimeOfTask = async () => {
-        let tasks = Array.from(this.state.tasks);
-
-        await tasks.map(task => {
-            if (task.id === this.props.task.task_id) {
-                task.taskInfo.status = this.props.task.status;
-                task.taskInfo.spent_time = this.props.task.spent_time;
-            }
-        });
-
-        this.setState({tasks});
-    };
-
-    async onDragEnd(result) {
-        const {planId} = this.state;
-        // dropped outside the list
-        if (!result.destination) {
-            return;
-        }
-
-        const tasks = this.reorder(
-            this.state.tasks,
-            result.source.index,
-            result.destination.index
-        );
-        const tasksOrder = tasks.map((task) => task.id);
-
-        this.props.changeOrderTasksOfPlan(planId, tasksOrder);
-        this.setState({
-            tasks
-        });
-
-
+    changeOrderItems(tasks, itemsOrder) {
+        this.setState({tasks: tasks})
+        this.props.changeOrderTasksOfPlan(this.state.planId, itemsOrder)
     }
 
-    reorder(list, startIndex, endIndex) {
-        const result = Array.from(list);
-        const [removed] = result.splice(startIndex, 1);
+    handleClose = () => {
+        this.setState({show:false})
+    };
+    handleShow = () => {
+        this.setState({show:true})
 
-        result.splice(endIndex, 0, removed);
-        return result;
     };
 
-    render() {
-        const {user: {userById, userById: {isLoading}}} = this.props;
 
+    render() {
+        const {user: {userById, userById: {isLoading}}, task: {isLoading: isLoadingTask, refreshSpentTimeTaskId}} = this.props;
+        console.log("this.this.props.tasks", this.props)
         return (
             <>
+
+
+                <ButtonToolbar>
+                    <Button variant="primary" onClick={this.handleShow}>
+                        Launch demo modal
+                    </Button>
+
+                    <MyModal show={this.state.show} onHide={this.handleClose}>
+                        {this.props.tasks.map((task, index) => (
+                            <div>
+                                <UserTask key={index} task={task}></UserTask>
+
+                            </div>
+
+                        ))}
+                        <CollapseBlock></CollapseBlock>
+                    </MyModal>
+                </ButtonToolbar>
+
+
                 <Row>
                     <Col md={{span: 6, offset: 3}}>
                         <h2 style={{textAlign: "center", marginBottom: "20px"}}>Plan</h2>
@@ -154,22 +139,27 @@ class UserById extends React.Component {
                         </Row>
                         <Row>
                             <Col xs={12}>
-                                <DraggableTaskList onDragEnd={this.onDragEnd} items={this.state.tasks}>
+                                <DraggableList items={this.state.tasks}
+                                               changeOrderItems={this.changeOrderItems}
+                                               options={{planId: this.state.planId}}>
                                     {(task) => (
-                                        <UserTask task={task}>
-                                            <UserActionsButtons
-                                                userId={userById.id}
-                                                taskId={task.id}
-                                                planId={userById.plan.id}
-                                                deleteTask={this.deleteTask}
-                                                isLoading={this.props.task.isLoading}
-                                                statusOfTask={task.taskInfo.status}
-                                                startStopTask={this.startStopTask}
-                                                isRefreshSpentTimeTaskId={this.props.task.refreshSpentTimeTaskId}
-                                            />
+                                        <UserTask task={task} status={task.taskInfo.status} spentTime={task.taskInfo.spent_time}>
+                                            <ButtonToolbar>
+                                                <CustomButton label={"Delete"}
+                                                              itemId={task.id}
+                                                              type={"danger"}
+                                                              handleSubmit={this.deleteTask}/>
+
+                                                <Link style={{textDecoration: 'none'}} to={{
+                                                    pathname: `/users/${userById.id}/plans/${userById.plan.id}/tasks/${task.id}/edit`
+                                                }}>
+                                                    <CustomButton label={"Edit Task"}
+                                                                  type={"info"}/>
+                                                </Link>
+                                            </ButtonToolbar>
                                         </UserTask>
                                     )}
-                                </DraggableTaskList>
+                                </DraggableList>
                             </Col>
                         </Row>
                     </>
@@ -216,13 +206,15 @@ UserById.propTypes = {
 const mapStateToProps = store => {
     return {
         user: store.user,
-        task: store.task
+        task: store.task,
+        tasks: store.task.tasks
     }
 };
 
 const mapDispatchProps = dispatch => {
     return {
         getUserById: (id) => dispatch(getUserById(id)),
+        getTasks: () => dispatch(getTasks()),
         deleteTask: (id) => dispatch(deleteTask(id)),
         changeOrderTasksOfPlan: (planId, tasksOrder) => dispatch(changeOrderTasksOfPlan(planId, tasksOrder)),
         changeSpentTimeOfTasks: (params) => dispatch(changeSpentTimeOfTasks(params))

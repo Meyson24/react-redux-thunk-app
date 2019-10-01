@@ -1,12 +1,12 @@
 import React from 'react'
 import {Accordion, Card} from "react-bootstrap";
 
-const UserTask = ({children, task, }) => {
+const UserTask = ({children, task, status='', spentTime=''}) => {
     return (
-        <Accordion>
+        <Accordion defaultActiveKey="0">
             <Card key={task.draggableId}>
                 <Accordion.Toggle as={Card.Header} eventKey={task.draggableId}>
-                    <span>DragId: <b>{task.draggableId}</b> | Id: <b>{task.id}</b>  .</span> {task.title} | {task.taskInfo.spent_time ? `${task.taskInfo.spent_time} day` : ''} | {task.taskInfo.status}
+                    {task.title} {status} {spentTime ? `${spentTime} day's` : ''}
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey={task.draggableId}>
                     <Card.Body>

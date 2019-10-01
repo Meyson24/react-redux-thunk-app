@@ -5,6 +5,8 @@ import {
     DELETE_TASK_SUCCESS,
     CHANGE_SPENT_TIME_TASK_REQUEST,
     CHANGE_SPENT_TIME_TASK_SUCCESS,
+    GET_TASKS_REQUEST,
+    GET_TASKS_SUCCESS,
     GET_TASK_BY_ID_REQUEST,
     GET_TASK_BY_ID_SUCCESS,
     REQUEST_ERROR,
@@ -13,6 +15,11 @@ import {
 } from '../../actions/task'
 
 export const initialState = {
+    tasks: [{
+        id: 0,
+        title: '',
+        description: ''
+    }],
     title: '',
     description: '',
     priority: '',
@@ -31,6 +38,10 @@ export default function taskReducer(state = initialState, action) {
             return {...state, errorMsg: null, isLoading: true};
         case GET_TASK_BY_ID_SUCCESS:
             return ({...state,...action.data, isLoading: false});
+        case GET_TASKS_REQUEST:
+            return {...state, errorMsg: null, isLoading: true};
+        case GET_TASKS_SUCCESS:
+            return ({...state,tasks: action.data, isLoading: false});
         case UPDATE_TASK_BY_ID_REQUEST:
             return {...state, errorMsg: null, isLoading: true};
         case UPDATE_TASK_BY_ID_SUCCESS:
@@ -44,7 +55,7 @@ export default function taskReducer(state = initialState, action) {
         case CHANGE_SPENT_TIME_TASK_SUCCESS:
             return {...state, ...action.data, refreshSpentTimeTaskId: '', isLoading: false};
         case REQUEST_ERROR:
-            return {...state, errorMsg: action.data};
+            return {...state, errorMsg: action.data, isLoading: false};
         default:
             return state;
     }

@@ -6,7 +6,7 @@ import {Button} from "react-bootstrap";
 
 const initialValues = {
     title: '',
-    text: ''
+    // text: ''
 };
 
 const validationSchema = Yup.object().shape({
@@ -16,7 +16,9 @@ const validationSchema = Yup.object().shape({
 });
 
 export const TaskForm = ({task='', handleSubmit, buttonName, getTextOfEditor}) => {
-    initialValues.title = task.title;
+    if (task.title) {
+        initialValues.title = task.title;
+    }
     return (
         <Formik
             initialValues={initialValues}

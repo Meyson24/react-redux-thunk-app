@@ -1,3 +1,4 @@
+import React from "react";
 import axios from "axios";
 
 export const baseAPI = axios.create({
@@ -8,14 +9,14 @@ export const baseAPI = axios.create({
 });
 
 baseAPI.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token')
+    const accessToken = localStorage.getItem('accessToken');
 
-    if (token) {
+    if (accessToken) {
         config.headers = {
             ...config.headers,
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${accessToken}`,
         }
     }
 
     return config;
-})
+});

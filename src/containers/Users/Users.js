@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { getUsers } from '../../actions/user'
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {getUsers} from '../../actions/user'
 import UserInfo from '../../components/User/UserInfo';
+import {Button} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 class Users extends Component {
     constructor(props) {
@@ -9,7 +11,7 @@ class Users extends Component {
         this.state = {
             isActive: 'default',
             methodOfSort: 'asc',
-            }
+        }
     }
 
     componentDidMount() {
@@ -25,10 +27,17 @@ class Users extends Component {
             <>
                 <h1 className="align-content-center">All Users</h1>
                 {this.props.users.map((user) => (
-                    <div key={user.id}>
-                        <UserInfo key={user.id} user={user}/>
-                    </div>))
-                }
+                    <UserInfo key={user.id} user={user}>
+                        <Link style={{ textDecoration: 'none' }} to={{
+                            pathname: `/users/${user.id}/plan`
+                        }}>
+
+                            <Button variant="success">
+                                See detail
+                            </Button>
+                        </Link>
+                    </UserInfo>
+                ))}
             </>
         );
     }

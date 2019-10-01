@@ -2,12 +2,9 @@ import React from "react";
 import {connect} from "react-redux";
 
 import {getPlanById} from "../../actions/plan";
-import PlanItem from '../../deletedFolders/Plan/PlanItem';
+import PlanItem from '../../Examples/Plan/PlanItem';
 
 class Plan extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
         const {id} = this.props.match.params;

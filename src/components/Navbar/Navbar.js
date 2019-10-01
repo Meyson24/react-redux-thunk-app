@@ -17,12 +17,13 @@ class NavbarHeader extends React.Component {
 
     render() {
         const { currentUser } = this.props.user;
+        const refreshToken = localStorage.getItem('refreshToken');
         return (
             <>
                 <Navbar style={{marginBottom: "20px"}} collapseOnSelect expand="lg" bg="dark" variant="dark">
                     <Navbar.Brand href="/">Home</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
-                    {currentUser.isAuthenticated ?
+                    {currentUser.isAuthenticated && refreshToken ?
                         <Navbar.Collapse id="responsive-navbar-nav">
                             <Nav className="mr-auto">
                                 <Nav.Link href="/post">Create post</Nav.Link>
@@ -30,12 +31,14 @@ class NavbarHeader extends React.Component {
                                     <Nav.Link href="/users">All Users</Nav.Link>
                                     : ""
                                 }
+                                <Nav.Link href={`/users/${currentUser.id}`}>My Profile</Nav.Link>
                             </Nav>
                             <Nav>
                                 <Button onClick={this.logout} variant="outline-light">Logout</Button>
                             </Nav>
                         </Navbar.Collapse>
                         : ''}
+
                 </Navbar>
             </>
         );

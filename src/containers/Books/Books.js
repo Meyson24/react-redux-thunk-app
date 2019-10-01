@@ -57,7 +57,7 @@ class Books extends Component {
                     <Col md="auto">
                         <PaginationItems page={page}
                                          total={total}
-                                         onGoToPage={this.onGoToPage}/>
+                                         goToBookPage={this.goToBookPage}/>
                     </Col>
                 </Row>
             </>

@@ -5,23 +5,12 @@ import Col from "react-bootstrap/Col";
 import { addBook } from '../../actions/book'
 import { AddBookForm } from "../../components/Book/AddBookForm";
 
-class Book extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            title: '',
-            description: '',
-            price: '',
-            errorTitle: false,
-            errorDescription: false,
-            errorPrice: false,
-            error: ''};
-    }
+class CreateBook extends Component {
 
     handleSubmit = book => {
         this.props.createBook(book);
         this.props.history.push('/')
-    }
+    };
 
     render() {
         return (
@@ -40,4 +29,4 @@ const mapDispatchProps = dispatch => {
     }
 };
 
-export default connect(null, mapDispatchProps)(Book);
+export default connect(null, mapDispatchProps)(CreateBook);

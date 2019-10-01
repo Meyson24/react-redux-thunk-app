@@ -4,10 +4,7 @@ import {connect} from "react-redux";
 import {getBookById} from "../../actions/book";
 import BookItem from '../../components/Book/BookItem';
 
-class Book extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+class BookById extends React.Component {
 
     componentDidMount() {
         const { id } = this.props.match.params;
@@ -39,4 +36,4 @@ const mapDispatchProps = dispatch => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchProps)(Book);
+export default connect(mapStateToProps, mapDispatchProps)(BookById);
