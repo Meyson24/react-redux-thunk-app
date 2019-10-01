@@ -9,6 +9,7 @@ import {changeSpentTimeOfTasks, getTasks} from "../../actions/task";
 import {changeOrderTasksOfPlan} from "../../actions/plan";
 import {deleteTask} from "../../actions/task";
 
+import {Checkbox, CheckboxGroup} from '../../components/Checkbox/Checkbox';
 import DraggableList from '../../components/DraggbleList/DraggableList';
 import UserTask from "../../components/User/UserTask";
 import AlertMessage from "../../components/AlertMessage/AlertMessage";
@@ -16,6 +17,17 @@ import CustomSpinner from "../../components/Spinner/CustomSpinner";
 import CustomButton from "../../components/Button/CustomButton";
 import MyModal from "../../components/Modal/MyModal";
 import CollapseBlock from "../../components/Modal/CollapseBlock";
+
+import { Formik, Field } from "formik";
+import * as Yup from 'yup';
+
+const initialValues = {checkboxGroup: []}
+const validationSchema =
+    Yup.object().shape({
+        checkboxGroup: Yup.array().required(
+            "At least one checkbox is required"
+        ),
+    })
 
 class UserById extends React.Component {
     constructor(props) {
@@ -32,6 +44,7 @@ class UserById extends React.Component {
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
+
 
     async componentDidMount() {
         const {id} = this.props.match.params;
@@ -103,6 +116,67 @@ class UserById extends React.Component {
                     </Button>
 
                     <MyModal show={this.state.show} onHide={this.handleClose}>
+                        <Formik
+                            initialValues={initialValues}
+                            validationSchema={validationSchema}
+                            onSubmit={(values, actions) => {
+                                setTimeout(() => {
+                                    console.log(JSON.stringify(values, null, 2));
+                                    actions.setSubmitting(false);
+                                }, 500);
+                            }}
+                            render={({
+                                         handleSubmit,
+                                         setFieldValue,
+                                         setFieldTouched,
+                                         values,
+                                         errors,
+                                         touched,
+                                         isSubmitting
+                                     }) => (
+                                <form onSubmit={handleSubmit}>
+                                    <h2>Checkbox group</h2>
+                                    <CheckboxGroup
+                                        id="checkboxGroup"
+                                        label="Which of these?"
+                                        value={values.checkboxGroup}
+                                        error={errors.checkboxGroup}
+                                        touched={touched.checkboxGroup}
+                                        onChange={setFieldValue}
+                                        onBlur={setFieldTouched}
+                                    >
+                                        <Field
+                                            component={Checkbox}
+                                            name="checkboxGroup"
+                                            id="111"
+                                            label="Option 111"
+                                        />
+                                        <Field
+                                            component={Checkbox}
+                                            name="checkboxGroup"
+                                            id="222"
+                                            label="Option 222"
+                                        />
+                                        <Field
+                                            component={Checkbox}
+                                            name="checkboxGroup"
+                                            id="333"
+                                            label="Option 333"
+                                        />
+                                        <Field
+                                            component={Checkbox}
+                                            name="checkboxGroup"
+                                            id="444"
+                                            label="Option 444"
+                                        />
+                                    </CheckboxGroup>
+
+                                    <button type="submit" disabled={isSubmitting}>
+                                        Submit
+                                    </button>
+                                </form>
+                            )}
+                        />
                         {this.props.tasks.map((task, index) => (
                             <div>
                                 <UserTask key={index} task={task}></UserTask>
